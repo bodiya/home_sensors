@@ -68,8 +68,8 @@ void loop(){
       // Read temperature and convert to Fahrenheit
       tmp_reading = (htu.readTemperature() * 1.8) + 32.0;
       
-      Serial.print("DS TEMP: ");Serial.println(tmp_reading);
-      Serial.print("DHT HUM: ");Serial.print(hum_reading);Serial.println("%");
+      Serial.print("HT TEMP: ");Serial.println(tmp_reading);
+      Serial.print("HT HUM : ");Serial.print(hum_reading);Serial.println("%");
       memcpy(&send_buffer_tmp[0],&sensorIdTmp,2);
       memcpy(&send_buffer_tmp[2],&tmp_reading,4);
       memcpy(&send_buffer_hum[0],&sensorIdHum,2);
