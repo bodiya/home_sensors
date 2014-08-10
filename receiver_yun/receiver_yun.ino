@@ -79,10 +79,10 @@ void loop()
     Serial.print("Received3: ");Serial.println(buf[3]);
     Serial.print("Received4: ");Serial.println(buf[4]);*/
     unsigned int* sensorId  = (unsigned int*)&buf[0];
-    float* temp_f  = (float*)&buf[2];
-    lastReading[*sensorId] = *temp_f;
-    Console.println(*temp_f);
-    //Serial.println(*temp_f);
+    float* reading  = (float*)&buf[2];
+    lastReading[*sensorId] = *reading;
+    Console.print(*sensorId);Console.print(": ");Console.println(*reading);
+    //Serial.println(*reading);
     blinkLED();
   }
   unsigned long currentTime = millis();
