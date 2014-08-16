@@ -46,8 +46,8 @@ volatile int f_wdt=1;
 float tmp_reading;
 float hum_reading;
 int transfer_pin = 2; //digital
-unsigned int sensorIdTmp = 4;
-unsigned int sensorIdHum = 8;
+unsigned int sensorIdTmp = 5;
+unsigned int sensorIdHum = 9;
 uint8_t send_buffer_tmp[6];
 uint8_t send_buffer_hum[6];
 

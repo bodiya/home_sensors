@@ -38,8 +38,12 @@ unsigned int numSensors = 24;
 //1 = Living Room (temp)
 //2 = Master Bedroom (temp)
 //3 = Office (temp)
-//4 = Basement (temp)
-//8 = Basement (humidity)
+//4 = Basement (finished) (temp)
+//5 = Basement (unfinished) (temp)
+//6 = Kitchen (temp)
+//8 = Basement (finished) (humidity)
+//9 = Basement (unfinished) (humidity)
+//10 = Kitchen (pressure)
 float lastReading[24];
 
 unsigned long lastWriteTime = 0;

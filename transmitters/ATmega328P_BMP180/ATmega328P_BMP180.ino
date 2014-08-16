@@ -36,8 +36,8 @@ volatile int f_wdt=1;
 float tmp_reading;
 float hPa_reading;
 int transfer_pin = 2; //digital
-unsigned int sensorIdTmp = 16;
-unsigned int sensorIdPre = 17;
+unsigned int sensorIdTmp = 6;
+unsigned int sensorIdPre = 10;
 uint8_t send_buffer_tmp[6];
 uint8_t send_buffer_hPa[6];
 
@@ -92,7 +92,7 @@ void loop(){
         hPa_reading = event.pressure;
         
         bmp.getTemperature(&tmp_reading);
-        tmp_reading = (tmp_reading * 1.8) + 32;
+        tmp_reading = (tmp_reading * 1.8) + 32.0;
     
         /* Then convert the atmospheric pressure, SLP and temp to altitude    */
         /* Update this next line with the current SLP for better results      */
