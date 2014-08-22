@@ -110,6 +110,9 @@ void loop(){
  ***************************************************/
 void enterSleep(void)
 {
+  //disable ADC
+  ADCSRA = 0;
+
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);   /* EDIT: could also use SLEEP_MODE_PWR_DOWN for lowest power consumption. */
   //set_sleep_mode(SLEEP_MODE_IDLE);
   sleep_enable();
@@ -120,6 +123,9 @@ void enterSleep(void)
   /* The program will continue from here after the WDT timeout*/
   sleep_disable(); /* First thing to do is disable sleep. */
   
+  //enable ADC
+  //ADCSRA = 1;
+
   /* Re-enable the peripherals. */
   power_all_enable();
 }
