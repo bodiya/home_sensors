@@ -1,6 +1,6 @@
 /**************************************************************************
 This transmitter sleeps most of the time, retreives data from a sensor once
-a minute, then wakes up every few seconds to transmit data.
+a minute, then wakes up every so often to transmit data.
 Copyright (C) 2014 Brian Bodiya
 
 This program is free software; you can redistribute it and/or modify
@@ -47,7 +47,7 @@ uint8_t send_buffer[6];
 unsigned int loop_count = 0;
 
 void setup(){
-  Serial.begin(115200);  
+  //Serial.begin(115200);
   
   wdtSetup(0);
 
@@ -57,7 +57,7 @@ void setup(){
   vw_setup(1000);	 // Bits per sec
   
   sensors.begin(); 
-  
+
   //don't sleep too fast, otherwise we can't burn new sketches
   delay(5000);
 }
@@ -70,23 +70,24 @@ void loop(){
     {
       sensors.requestTemperatures();
       reading = sensors.getTempFByIndex(0);
-      Serial.println(reading);
+      //Serial.println(reading);
+      //delay(1000);
       memcpy(&send_buffer[0],&sensorId,2);
       memcpy(&send_buffer[2],&reading,4);
       
-      //digitalWrite(1, HIGH); // Flash a light to show transmitting
-      vw_send(send_buffer,6);
-      //vw_send((uint8_t*)&sensorId,2);
-      //vw_send((uint8_t*)&reading,4);
-      vw_wait_tx(); // Wait until the whole message is gone
-      
       loop_count = 1;
     }
-    else
+    else if (loop_count % 2)
     {
       //resend the message, just for good measure
       vw_send(send_buffer,6);
       vw_wait_tx(); // Wait until the whole message is gone
+      //Serial.println("Sent value");
+      //delay(1000);
+      loop_count++;
+    }
+    else
+    {
       loop_count++;
     }
     
@@ -178,7 +179,7 @@ ISR(WDT_vect)
   }
   else
   {
-    Serial.println("WDT Overrun!!!");
+    //Serial.println("WDT Overrun!!!");
     delay(100);
   }
 }

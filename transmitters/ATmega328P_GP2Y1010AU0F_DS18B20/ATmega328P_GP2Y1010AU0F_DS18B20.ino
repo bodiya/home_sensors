@@ -1,6 +1,6 @@
 /**************************************************************************
 This transmitter sleeps most of the time, retreives data from a sensor once
-a minute, then wakes up every few seconds to transmit data.
+a minute, then wakes up every so often to transmit data.
 Copyright (C) 2014 Brian Bodiya
 
 This program is free software; you can redistribute it and/or modify
@@ -152,16 +152,18 @@ void loop(){
       
       loop_count = 1;
     }
-    else
+    else if (loop_count % 2)
     {
-      //resend the message, just for good measure
+      vw_send(dust_send_buffer,6);
+      vw_wait_tx(); // Wait until the whole message is gone
+      vw_send(tmp_send_buffer,6);
+      vw_wait_tx(); // Wait until the whole message is gone
       loop_count++;
     }
-    
-    vw_send(dust_send_buffer,6);
-    vw_wait_tx(); // Wait until the whole message is gone
-    vw_send(tmp_send_buffer,6);
-    vw_wait_tx(); // Wait until the whole message is gone
+    else
+    {
+      loop_count++;
+    }
     
     /* Don't forget to clear the flag. */
     f_wdt = 0;
@@ -183,6 +185,9 @@ void loop(){
  ***************************************************/
 void enterSleep(void)
 {
+  //disable ADC
+  ADCSRA = 0;
+
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);   /* EDIT: could also use SLEEP_MODE_PWR_DOWN for lowest power consumption. */
   //set_sleep_mode(SLEEP_MODE_IDLE);
   sleep_enable();
@@ -193,6 +198,9 @@ void enterSleep(void)
   /* The program will continue from here after the WDT timeout*/
   sleep_disable(); /* First thing to do is disable sleep. */
   
+  //enable ADC
+  ADCSRA = 1;
+
   /* Re-enable the peripherals. */
   power_all_enable();
 }
