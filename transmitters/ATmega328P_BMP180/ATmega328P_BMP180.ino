@@ -35,6 +35,10 @@ volatile int f_wdt=1;
 
 float tmp_reading;
 float hPa_reading;
+float lastTmpReading = 9999;
+float lastHPaReading = 9999;
+bool newTmpReading = false;
+bool newHPaReading = false;
 int transfer_pin = 2; //digital
 unsigned int sensorIdTmp = 6;
 unsigned int sensorIdPre = 10;
@@ -93,6 +97,10 @@ void loop(){
         
         bmp.getTemperature(&tmp_reading);
         tmp_reading = (tmp_reading * 1.8) + 32.0;
+        newTmpReading = (tmp_reading != lastTmpReading);
+        lastTmpReading = tmp_reading;
+        newHPaReading = (hPa_reading != lastHPaReading);
+        lastHPaReading = hPa_reading;
     
         /* Then convert the atmospheric pressure, SLP and temp to altitude    */
         /* Update this next line with the current SLP for better results      */
@@ -103,7 +111,7 @@ void loop(){
                                             temperature)); 
         Serial.println(" m");
         Serial.println("");*/
-        goodReading = true;
+        goodReading = (newHPaReading || newTmpReading);
       }
       else
       {
@@ -119,12 +127,15 @@ void loop(){
       
       loop_count = 1;
     }
-    else if (loop_count % 2)
+    else if ((loop_count % 2) && (goodReading))
     {
-      if (goodReading)
+      if (newTmpReading)
       {
         vw_send(send_buffer_tmp,6);
         vw_wait_tx(); // Wait until the whole message is gone
+      }
+      if (newHPaReading)
+      {
         vw_send(send_buffer_hPa,6);
         vw_wait_tx(); // Wait until the whole message is gone
       }

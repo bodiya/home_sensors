@@ -40,6 +40,8 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
 float reading;
+float lastReading = 999;
+bool newReading = false;
 int transfer_pin = 2; //digital
 unsigned int sensorId = 3;
 uint8_t send_buffer[6];
@@ -70,6 +72,8 @@ void loop(){
     {
       sensors.requestTemperatures();
       reading = sensors.getTempFByIndex(0);
+      newReading = (reading != lastReading);
+      lastReading = reading;
       //Serial.println(reading);
       //delay(1000);
       memcpy(&send_buffer[0],&sensorId,2);
@@ -77,7 +81,7 @@ void loop(){
       
       loop_count = 1;
     }
-    else if (loop_count % 2)
+    else if ((loop_count % 2) && (newReading))
     {
       //resend the message, just for good measure
       vw_send(send_buffer,6);

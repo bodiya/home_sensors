@@ -34,6 +34,10 @@ volatile int f_wdt=1;
 
 float tmp_reading;
 float hum_reading;
+float lastTmpReading = 999;
+float lastHumReading = 999;
+bool newTmpReading = false;
+bool newHumReading = false;
 int transfer_pin = 2; //digital
 unsigned int sensorIdTmp = 4;
 unsigned int sensorIdHum = 8;
@@ -65,8 +69,12 @@ void loop(){
     if (loop_count % 7 == 0)
     {
       hum_reading = htu.readHumidity();
+      newHumReading = (hum_reading != lastHumReading);
+      lastHumReading = hum_reading;
       // Read temperature and convert to Fahrenheit
       tmp_reading = (htu.readTemperature() * 1.8) + 32.0;
+      newTmpReading = (tmp_reading != lastTmpReading);
+      lastTmpReading = tmp_reading;
       
       Serial.print("HT TEMP: ");Serial.println(tmp_reading);
       Serial.print("HT HUM : ");Serial.print(hum_reading);Serial.println("%");
@@ -77,12 +85,18 @@ void loop(){
       
       loop_count = 1;
     }
-    else if (loop_count % 2)
+    else if ((loop_count % 2) && (newTmpReading || newHumReading))
     {
-      vw_send(send_buffer_tmp,6);
-      vw_wait_tx(); // Wait until the whole message is gone
-      vw_send(send_buffer_hum,6);
-      vw_wait_tx(); // Wait until the whole message is gone
+      if (newTmpReading)
+      {
+        vw_send(send_buffer_tmp,6);
+        vw_wait_tx(); // Wait until the whole message is gone
+      }
+      if (newHumReading)
+      {
+        vw_send(send_buffer_hum,6);
+        vw_wait_tx(); // Wait until the whole message is gone
+      }
       loop_count++;
     }
     else
