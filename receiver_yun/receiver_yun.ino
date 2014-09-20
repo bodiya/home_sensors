@@ -31,10 +31,10 @@ unsigned int numChannels = 3;
 //0 = Home Temperature
 //1 = Home Sensors
 //2 = Home Test Channel
-String THINKSPEAK_API_KEY[3] = {"***REMOVED***","***REMOVED***","***REMOVED***"};
+String THINKSPEAK_API_KEY[3] = {"CHANNEL1_API_KEY","CHANNEL2_API_KEY","CHANNEL3_API_KEY"};
 
 unsigned int numSensors = 24;
-//0 = ***REMOVED***'s Room (temp)
+//0 = Kid's Room (temp)
 //1 = Living Room (temp)
 //2 = Master Bedroom (temp)
 //3 = Office (temp)
@@ -52,8 +52,6 @@ void setup()
 {
   pinMode(led, OUTPUT);
   blinkLED();
-  //Serial.begin(9600);	// Debugging only
-  //Serial.println("setup");
   Bridge.begin();
   Console.begin();
   //while (!Console);
@@ -76,17 +74,10 @@ void loop()
   //blink_LED();
   if (vw_get_message(buf, &buflen) && (buflen == 6)) // Non-blocking
   {
-    /*Serial.print("Received ");Serial.print(buflen);Serial.println(" bytes");
-    Serial.print("Received0: ");Serial.println(buf[0]);
-    Serial.print("Received1: ");Serial.println(buf[1]);
-    Serial.print("Received2: ");Serial.println(buf[2]);
-    Serial.print("Received3: ");Serial.println(buf[3]);
-    Serial.print("Received4: ");Serial.println(buf[4]);*/
     unsigned int* sensorId  = (unsigned int*)&buf[0];
     float* reading  = (float*)&buf[2];
     lastReading[*sensorId] = *reading;
     Console.print(*sensorId);Console.print(": ");Console.println(*reading);
-    //Serial.println(*reading);
     blinkLED();
   }
   unsigned long currentTime = millis();
