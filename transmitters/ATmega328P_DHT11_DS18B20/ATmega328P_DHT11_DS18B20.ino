@@ -95,6 +95,7 @@ void loop(){
       goodReading = goodReading && (newTmpReading || newHumReading);
       Serial.print("DS TEMP: ");Serial.println(tmp_reading);
       Serial.print("DHT HUM: ");Serial.print(hum_reading);Serial.println("%");
+      delay(100);
       memcpy(&send_buffer_tmp[0],&sensorIdTmp,2);
       memcpy(&send_buffer_tmp[2],&tmp_reading,4);
       memcpy(&send_buffer_hum[0],&sensorIdHum,2);
