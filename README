@@ -7,7 +7,7 @@ able to be placed strategically to minimize the maximum distance from any of
 the sensors.
 
 Yun Receiver
------------------
+--------
 The receiver defines a number of ThingSpeak channels that data will be sent to.
 The sensor IDs determine which channel data will be sent to. For example,
 sensors 0-7 will be sent to the first channel, 8-15 to the second channel, and
@@ -17,7 +17,7 @@ to ThingSpeak once a minute. Only new values received since the last update to
 ThingSpeak will be sent.
 
 Sensor Nodes
------------------
+--------
 A sensor node can really be anything that broadcasts data (along with its
 sensor ID) in a format that can be understood by the receiver. All of the
 sensor nodes in this project consists of an ATmega328P, one or more sensors,
