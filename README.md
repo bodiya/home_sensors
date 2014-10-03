@@ -6,6 +6,12 @@ the receiver, but the Yun's wireless capabilities have the advantage of being
 able to be placed strategically to minimize the maximum distance from any of
 the sensors.
 
+Results
+--------
+Click on an item in the legend to enable/disable the sensor.
+
+http://20-minutes.net/charts/ThingSpeak.html
+
 Yun Receiver
 --------
 The receiver defines a number of ThingSpeak channels that data will be sent to.
@@ -25,3 +31,7 @@ and a 433MHz ASK/OOK transmitter. They are battery powered, so each sensor
 reading is only updated once a minute, and the ATmega329P sleeps for the rest
 of the time. Data is only transmitted when there is a change in the sensor
 value.
+
+Fritzing Files
+--------
+TODO
